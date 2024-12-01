@@ -1,0 +1,2 @@
+ALTER TABLE urls
+    ADD COLUMN monitoring BOOLEAN DEFAULT FALSE;

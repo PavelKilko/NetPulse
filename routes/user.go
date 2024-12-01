@@ -26,4 +26,6 @@ func SetupRoutes(app *fiber.App) {
 	user.Post("/groups/:group_id/urls", handlers.CreateURL)           // Create a new URL of group
 	user.Put("/groups/:group_id/urls/:url_id", handlers.UpdateURL)    // Update a URL of group
 	user.Delete("/groups/:group_id/urls/:url_id", handlers.DeleteURL) // Delete a URL of group
+
+	user.Put("/groups/:group_id/urls/:url_id/monitoring", handlers.ToggleMonitoring)
 }
