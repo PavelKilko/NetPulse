@@ -1,4 +1,19 @@
 services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+
   redis:
     image: redis:latest
     container_name: redis
@@ -20,16 +35,29 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   netpulse:
-    build: .
-    container_name: netpulse-0.0.11
+    build: ./backend/
+    container_name: netpulse-0.0.13
     ports:
       - '8080:8080'
     depends_on:
       - redis
       - postgres
+      - rabbitmq
+      - mongodb
     volumes:
-      - ./.env:/root/.env
+      - ./backend/.env:/root/.env
+
+  monitor:
+    build: ./backend/monitor
+    container_name: netpulse-monitor-0.0.2
+    depends_on:
+      - rabbitmq
+      - postgres
+      - mongodb
+    volumes:
+      - ./backend/monitor/.env:/root/.env
 
 volumes:
   redis-data:
   postgres-data:
+  mongodb-data:

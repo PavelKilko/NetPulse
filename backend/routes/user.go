@@ -28,4 +28,5 @@ func SetupRoutes(app *fiber.App) {
 	user.Delete("/groups/:group_id/urls/:url_id", handlers.DeleteURL) // Delete a URL of group
 
 	user.Put("/groups/:group_id/urls/:url_id/monitoring", handlers.ToggleMonitoring)
+	user.Get("/groups/:group_id/urls/:url_id/metrics", handlers.GetMonitoringStatistics)
 }

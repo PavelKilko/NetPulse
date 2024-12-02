@@ -14,7 +14,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 
 # Copy the source from the current directory to the Working Directory inside the container
-COPY . .
+COPY .. .
 
 # Build the Go app
 RUN go build -o netpulse-backend
@@ -37,11 +37,11 @@ COPY --from=builder /app/netpulse-backend .
 # Copy migration files from the previous stage
 COPY --from=builder /app/db/migration ./db/migration
 
-# Copy the scripts directory from the previous stage
-COPY --from=builder /app/scripts ./scripts
+# Copy the unified startup script
+COPY --from=builder /app/scripts/startup.sh ./startup.sh
 
-# Make the wait-for-it script and entrypoint script executable
-RUN chmod +x ./scripts/wait-for-it.sh ./scripts/entrypoint.sh
+# Make the startup script executable
+RUN chmod +x ./startup.sh
 
-# Command to run the entrypoint script
-ENTRYPOINT ["./scripts/entrypoint.sh"]
+# Command to run the unified startup script
+ENTRYPOINT ["./startup.sh"]
