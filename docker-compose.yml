@@ -35,8 +35,8 @@ services:
       - postgres-data:/var/lib/postgresql/data
 
   netpulse:
-    build: ./backend/
-    container_name: netpulse-0.1.0
+    build: ./backend
+    container_name: netpulse-api-0.1.0
     ports:
       - '8080:8080'
     depends_on:
@@ -56,6 +56,16 @@ services:
       - mongodb
     volumes:
       - ./backend/monitor/.env:/root/.env
+
+  frontend:
+    build: ./frontend
+    container_name: netpulse-frontend-0.0.1
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend/.env:/app/.env
+    depends_on:
+      - netpulse
 
 volumes:
   redis-data:
