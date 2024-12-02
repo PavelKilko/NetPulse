@@ -7,12 +7,14 @@ import (
 )
 
 func SetupRoutes(app *fiber.App) {
+	api := app.Group("/api")
+
 	// Public routes
-	app.Post("/login", handlers.Login)
-	app.Post("/signup", handlers.Signup)
+	api.Post("/login", handlers.Login)
+	api.Post("/signup", handlers.Signup)
 
 	// User routes (protected)
-	user := app.Group("/user")
+	user := api.Group("/user")
 	user.Use(middleware.JWTMiddleware())
 
 	user.Post("/logout", handlers.Logout)
